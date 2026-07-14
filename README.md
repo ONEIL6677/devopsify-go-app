@@ -306,7 +306,7 @@ kubectl get pods -n ingress-nginx
 > Get the ip address of the load balancer
 > copy the last ip address
 ```bash
-nslookup <domain-of-load-balancer>
+nslookup domain-of-load-balancer
 ```
 > Go to and paste the ip address
 ```bash
