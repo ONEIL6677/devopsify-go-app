@@ -157,12 +157,58 @@ spec:
 ## Step 4: Creat a kubernetes cluster (EKS)
 
 ### prerequisites
-
+#### instal kubectl
 >kubectl – A command line tool for working with Kubernetes clusters. For more information, see [Installing or updating kubectl]("https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html").
 
+#### Install eksctl
 >eksctl – A command line tool for working with EKS clusters that automates many individual tasks. For more information, see [Installing or updating]("https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html").
 
+>Download the kubectl binary for your cluster’s Kubernetes version from Amazon S3.
+>Kubernetes 1.35
+```bash
+curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.35.3/2026-04-08/bin/linux/amd64/kubectl
+```
+```bash
+chmod +x ./kubectl
+```
+> copy binary to a folder in your path
+```bash
+mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$PATH
+```
+#### install aws cli
 >AWS CLI – A command line tool for working with AWS services, including Amazon EKS. For more information, see [Installing, updating, and uninstalling the AWS CLI]("https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html") in the AWS Command Line Interface User Guide. After installing the AWS CLI, we recommend that you also configure it. For more information, see [Quick configuration]("https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html#cli-configure-quickstart-config") with aws configure in the AWS Command Line Interface User Guide.>
+
+### Install EKS
+
+> Install a EKS cluster with EKSCTL
+
+```bash
+eksctl create cluster --name demo-cluster --region us-east-1 
+```
+
+> Delete the cluster
+
+```bash
+eksctl delete cluster --name demo-cluster --region us-east-1
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
