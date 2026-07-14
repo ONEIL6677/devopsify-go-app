@@ -321,4 +321,4 @@ go-app.local
 ```
 > you should be able to see the app
 
-> Next steps are here /devopsipsify/CICD.md
+> Next steps are here ![link](./CICD.md)
