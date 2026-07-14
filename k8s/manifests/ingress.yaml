@@ -4,17 +4,17 @@ kind: Ingress
 metadata:
   name: go-app
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/rewrite-target: /   # rewrites request path before forwarding to service
 spec:
-  ingressClassName: nginx
+  ingressClassName: nginx        # tells k8s to use the NGINX Ingress Controller
   rules:
-  - host: go-app.local
+  - host: go-app.local             # domain that routes to this service
     http:
       paths: 
-      - path: /
+      - path: /                      # match all paths under /
         pathType: Prefix
         backend:
           service:
-            name: go-app
+            name: go-app                # must match your Service's name
             port:
-              number: 80
+              number: 80                  # must match your Service's exposed port
