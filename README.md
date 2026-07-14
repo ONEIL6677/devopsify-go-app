@@ -318,7 +318,7 @@ sudo nano /etc/hosts
 > then go to your browser and type 
 ```bash 
 go-app.local
-``` 
+```
 > you should be able to see the app
 
 
