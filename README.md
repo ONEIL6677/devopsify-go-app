@@ -54,7 +54,7 @@ go build -o main .
 ```bash
 ./main
 ```
->The server will start on port 8080. You can access it by navigating to http://localhost:8080/courses in your web browser.
+>The server will start on port 8080. You can access it by navigating to http://localhost:8080 in your web browser.
 
 ## step 2: Dockerise the app
 > We will use Docker to containerize the Go web application. Docker is a container platform that allows you to > build, ship, and run containers.
@@ -315,7 +315,11 @@ sudo nano /etc/hosts
 >map the ip address of the load balancer to the domain name in your ingress file so paste both in the hosts folder
 >e.g
 `1.126.99.2 go-app.local`
->then go to your browser and type `go-app.local/courses` you should be able to see the app
+> then go to your browser and type 
+```bash 
+go-app.local
+``` 
+> you should be able to see the app
 
 
 
