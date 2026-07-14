@@ -175,26 +175,82 @@ chmod +x ./kubectl
 ```bash
 mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$PATH
 ```
+>Add the $HOME/bin path to your shell initialization file so that it is configured when you open a shell.
+```bash
+echo 'export PATH=$HOME/bin:$PATH' >> ~/.bashrc
+```
 #### install aws cli
 >AWS CLI – A command line tool for working with AWS services, including Amazon EKS. For more information, see [Installing, updating, and uninstalling the AWS CLI]("https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html") in the AWS Command Line Interface User Guide. After installing the AWS CLI, we recommend that you also configure it. For more information, see [Quick configuration]("https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html#cli-configure-quickstart-config") with aws configure in the AWS Command Line Interface User Guide.>
 
 ### Install EKS
 
 > Install a EKS cluster with EKSCTL
-
+> This command takes time to execute
 ```bash
 eksctl create cluster --name demo-cluster --region us-east-1 
 ```
-
 > Delete the cluster
-
 ```bash
 eksctl delete cluster --name demo-cluster --region us-east-1
 ```
 
+## Step 5: create kubernetes resources
+#### Step 3: create and configure ingress
+> create a deployment from deployment file
+```bash
+kubectl apply -f k8s/manifest/deployment.yaml
+```
+>Verify with if it is running
+```bash
+kubectl get pods
+```
 
+#### Step 3: create a service and verify if its working
+> create a service from service file
+```bash
+kubectl apply -f k8s/manifest/service.yaml
+```
+>Verify if service is working well by exposing it to a node pode mode
+```bash
+kubectl edit svc go-app
+```
+>Verify with if it is running and also the port number it is expose to
+```bash
+kubectl get svc
+```
+>scroll down to type: cluster ip and change `ClusterIP` to `NodePort`
 
+>get the ip address of any node to access the app buy using the command bellow
+```bash
+kubectl get nodes -o wide
+```
+>copy any external Ip address you see paste in browser like this
+>e.g externalIP:nodeport/about
+>NB. You will get node port by running `kubectl get svc`
 
+#### Step 3: create and configure ingress
+> create a ingress from ingress file
+```bash
+kubectl apply -f k8s/manifest/ingress.yaml
+```
+#### Step 4: install ingress controler
+>Ingress Controller the actual software (like NGINX, Traefik, or a cloud provider's controller) that runs in your cluster and does the real work of routing traffic based on the rules defined in your Ingress resources.
+
+>Why it matters: an Ingress resource is just a set of rules it does nothing on its own. Without an Ingress Controller installed and running, those rules are never enforced, and your Ingress won't actually route any traffic. The controller is what turns your host/path rules into real, working request routing.
+
+>Ingress contoler checks the rules defined ingress and then creates a load balancer (network load balancer here) to follow the rules
+```bash
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.11.1/deploy/static/provider/aws/deploy.yaml
+```
+>verify if ingress pode is running
+```bash
+kubectl get pods -n ingress-nginx
+``` #>go to aws and verify if a network load balancer was created
+
+>use this command to get the domain of your ingress
+```bash
+kubectl get ing
+```
 
 
 
