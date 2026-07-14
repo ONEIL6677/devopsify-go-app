@@ -1,10 +1,60 @@
 # DEVOPSIFY GO APP FOR COMPLETE BEGINNERS
+
+The main goal of this project is to implement DevOps practices in the Go web application. The project is a simple website written in Golang. It uses the `net/http` package to serve HTTP requests.
+
+DevOps practices include the following:
+
+- Creating Dockerfile (Multi-stage build)
+- Containerization
+- Continuous Integration (CI)
+- Continuous Deployment (CD)
+
+## Summary Diagram
+![image](https://github.com/user-attachments/assets/45f4ef12-c5b5-4247-9d43-356b5dfb671b)
 > if you are an experience perserson go and follow this readme /k8s/README.md
 
 ## Step 1: run the app locally
-
-
-
+### install go on ubuntu
+```bash
+sudo apt update && sudo apt upgrade -y
+```
+> Check https://go.dev/dl/ for the latest version number if needed
+```bash
+wget https://go.dev/dl/go1.23.0.linux-amd64.tar.gz
+```
+> Remove any old Go install (safe even if none exists)
+```bash
+sudo rm -rf /usr/local/go
+```
+> Extract into /usr/local
+```bash
+sudo tar -C /usr/local -xzf go1.23.0.linux-amd64.tar.gz
+```
+> Clean up the downloaded archive
+```bash
+rm go1.23.0.linux-amd64.tar.gz
+```
+> add go to path
+```bash
+echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
+```
+```bash
+source ~/.bashrc
+```
+> verify installation
+```bash
+go version
+```
+### Run go app
+> Build go app binary in the current directory
+```bash
+go build -o main .
+```
+> Run artificte or binary you just build
+```bash
+./main
+```
+>The server will start on port 8080. You can access it by navigating to http://localhost:8080/courses in your web browser.
 
 ## step 2: Dockerise the app
 > We will use Docker to containerize the Go web application. Docker is a container platform that allows you to > build, ship, and run containers.
@@ -248,63 +298,26 @@ kubectl get pods -n ingress-nginx
 ```
 >go to aws and verify if a network load balancer was created
 
->use this command to get the domain of your ingress
+>use this command to get the domain of your ingress `kubectl get ing`
+
+## DNS mapping
+> using the domain of your load balance you cannot access the app because in your ingress.yaml file you mention that the app can only be accessed using the domain `go-app.local`
+
+> Get the ip address of the load balancer
+> copy the last ip address
 ```bash
-kubectl get ing
+nslookup <domain-of-load-balancer>
 ```
+> Go to and paste the ip address
+```bash
+sudo nano /etc/hosts
+```
+>map the ip address of the load balancer to the domain name in your ingress file so paste both in the hosts folder
+>e.g
+`1.126.99.2 go-app.local`
+>then go to your browser and type `go-app.local/courses` you should be able to see the app
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# DevOpsify the go web application
-
-The main goal of this project is to implement DevOps practices in the Go web application. The project is a simple website written in Golang. It uses the `net/http` package to serve HTTP requests.
-
-DevOps practices include the following:
-
-- Creating Dockerfile (Multi-stage build)
-- Containerization
-- Continuous Integration (CI)
-- Continuous Deployment (CD)
-
-## Summary Diagram
-![image](https://github.com/user-attachments/assets/45f4ef12-c5b5-4247-9d43-356b5dfb671b)
-
-
-## Creating Dockerfile (Multi-stage build)
-
-The Dockerfile is used to build a Docker image. The Docker image contains the Go web application and its dependencies. The Docker image is then used to create a Docker container.
-
-We will use a Multi-stage build to create the Docker image. The Multi-stage build is a feature of Docker that allows you to use multiple build stages in a single Dockerfile. This will reduce the size of the final Docker image and also secure the image by removing unnecessary files and packages.
-
-## Containerization
-
-Containerization is the process of packaging an application and its dependencies into a container. The container is then run on a container platform such as Docker. Containerization allows you to run the application in a consistent environment, regardless of the underlying infrastructure.
-
-We will use Docker to containerize the Go web application. Docker is a container platform that allows you to build, ship, and run containers.
 
 
 
