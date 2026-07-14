@@ -245,7 +245,8 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/cont
 >verify if ingress pode is running
 ```bash
 kubectl get pods -n ingress-nginx
-``` #>go to aws and verify if a network load balancer was created
+```
+```bash
 kubectl get pods -n ingress-nginx
 ``` 
 >go to aws and verify if a network load balancer was created
