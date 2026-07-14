@@ -246,6 +246,9 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/cont
 ```bash
 kubectl get pods -n ingress-nginx
 ``` #>go to aws and verify if a network load balancer was created
+kubectl get pods -n ingress-nginx
+``` 
+>go to aws and verify if a network load balancer was created
 
 >use this command to get the domain of your ingress
 ```bash
