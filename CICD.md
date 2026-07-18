@@ -267,48 +267,93 @@ jobs:                          # a workflow is made of one or more jobs, each ru
 >DOCKERHUB_TOKEN
 
 >secret*
->Paste your token here
+>Paste your dockerhub token here
 
-### How to get dockerhub token
+#### How to get dockerhub token
 >log int to dockerhub> click on `myprofile` on top right> select `account settings`> click on `personal access token`> click on `Generate new token`> give a description then on second box give read and write permisions
 
-
 ### Add a new repository secret for github token
+>name*
+>TOKEN
 
+>secret*
+>Paste your github token here
 
+#### How to get github token
+>Go to the github account that will host the code click on the `profile icon` on top right> scroll down click on `developer settings`> click `personal access token`> click on `classic token`> generate new token of type classic
+
+### last step. verify image and copy tag
+
+>go to dockerhub click on `go-app` image and click on `tags` copy the tage Id eg `023430121` go to `helm` folder> `go-app-chart`> `values.yaml`> paste tag id inside image tag at line 11 eg `tag: "10016307834"`
+**Commit code and verify if CI runs successfully**
 
 ## CD Stages (ArgoCD)
 
+### Install Argo CD using manifests
 
+```bash
+kubectl create namespace argocd
+```
+```bash
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+```
+>Access the Argo CD UI (Loadbalancer service) 
 
+```bash
+kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+```
+> get the port number and external IP address of the argoCD service so that you can be able to access argoCD UI
 
+```bash
+kubectl get svc -n argocd
+```
+> copy nodeport address under `argocd-server` it looks like 80:`30498`/TCP.443:32308/ so you copy eg -> 30498
 
+```bash
+kubectl get nodes -o wide
+```
+>copy the first extenal ip address and put it tigether with the port number you copied earlier on a brower to access argoCD UI
+>eg 54.161.25.151:30498 then click on `advance`> click `accepte` then you have access to the UI
 
+#### You need to provide username and password
+Username is **admin**
+>to get pasword run this command
+```bash
+kubectl get secrets -n argocd
+```
+>You will see **argocd-initial-admin-secret**
 
+>Run this next command
+```bash
+kubectl edit secret argocd-initial-admin-secret -n argocd
+```
 
+>Copy the password which is base 64 encoded and run this next command
+```bash
+ech pastePasswordHere | base64 --decode
+```
+>copy the password excluding the %i take it to argocd UI and paste it to log in
 
+- Click on **new app** at the top
 
+- Give app name **go-app**
 
+- **sinc policy** should be **Automatic** because CICD has to be automatic
 
+- select **Self Heal** argo cd can fix wrong changes made to your manifests manually
 
+- **repository** copy your github repo link and past here
 
-## Continuous Integration (CI)
+- **cluster url** keep it default -> **https://kubernetes.default.svc**
 
-Continuous Integration (CI) is the practice of automating the integration of code changes into a shared repository. CI helps to catch bugs early in the development process and ensures that the code is always in a deployable state.
+- **namespace** use **default** namespace
 
-We will use GitHub Actions to implement CI for the Go web application. GitHub Actions is a feature of GitHub that allows you to automate workflows, such as building, testing, and deploying code.
+- **values.yaml file** use the **values.yaml** file provided in github repo
 
-The GitHub Actions workflow will run the following steps:
+- at the top click **create** then go to your cluster and verify if resources were created
 
-- Checkout the code from the repository
-- Build the Docker image
-- Run the Docker container
-- Run tests
+```bash
+kubectl get all
+```
+> access your wesite on the browser using **go-app.local**
 
-## Continuous Deployment (CD)
-
-Continuous Deployment (CD) is the practice of automatically deploying code changes to a production environment. CD helps to reduce the time between code changes and deployment, allowing you to deliver new features and fixes to users faster.
-
-We will use Argo CD to implement CD for the Go web application. Argo CD is a declarative, GitOps continuous delivery tool for Kubernetes. It allows you to deploy applications to Kubernetes clusters using Git as the source of truth.
-
-The Argo CD application will deploy the Go web application to a Kubernetes cluster. The application will be automatically synced with the Git repository, ensuring that the application is always up to date.
