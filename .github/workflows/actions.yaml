@@ -1,16 +1,17 @@
 # CICD using GitHub actions
 
-name: CI/CD
+name: CI/CD #name of workflow or pipeline
 
 # Exclude the workflow to run on changes to the helm chart (avoids a trigger loop, since this workflow itself commits to helm/**)
 on:
   push:
     branches:
-      - main
-    paths-ignore:
+      - main #only braach that will get push to the pipeline and triger the workflow
+    paths-ignore: # under this line are files and folders you want your github actions to ignore
       - 'helm/**'
       - 'k8s/**'
       - 'README.md'
+      - 'CICD.md'
 
 jobs:
 
