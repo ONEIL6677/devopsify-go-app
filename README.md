@@ -322,3 +322,5 @@ go-app.local
 > you should be able to see the app
 
 > Next steps are here ![link](./CICD.md)
+
+cicd-gitops-architecture
