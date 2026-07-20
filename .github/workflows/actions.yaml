@@ -12,6 +12,7 @@ on:
       - 'k8s/**'
       - 'README.md'
       - 'CICD.md'
+      - 'how-it-works.md'
 
 jobs:
 
